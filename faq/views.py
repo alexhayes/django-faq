@@ -6,6 +6,7 @@ from django.template import RequestContext
 from django.http import Http404
 from models import Question
 from forms import SubmitFAQForm
+from django.core.urlresolvers import reverse
 
 def question_detail(request, slug, template_name='faq/question_detail.html', extra_context={}):
     """
@@ -67,7 +68,7 @@ def faq_list_by_group( request,
                        template_name='faq/faq_list_by_group.html',
                        extra_context={} ):
 
-    extra = { 'page_title': 'Grouped FAQs' }
+    extra = { 'page_title': 'FAQs' }
     extra.update( extra_context )
     
     return question_list( request, group=True,
@@ -75,7 +76,7 @@ def faq_list_by_group( request,
 
 def submit_faq( request, form_class=SubmitFAQForm, 
              template_name="faq/submit_question.html",
-             success_url="/", extra_context={} ):
+             extra_context={} ):
     if request.method == 'POST':
         form = form_class(data=request.POST)
         if form.is_valid():
@@ -88,7 +89,7 @@ def submit_faq( request, form_class=SubmitFAQForm,
                 request.user.message_set.create(
                     message="Your question was submitted and will be reviewed by the site administrator for possible inclusion in the FAQ." )
             question.save()
-            return HttpResponseRedirect(success_url)
+            return HttpResponseRedirect(reverse('faq_submit_success'))
     else:
         form = form_class()
     context = { 'form': form }

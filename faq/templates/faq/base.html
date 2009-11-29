@@ -1,29 +1,8 @@
-<html>
-<head>
- <title>{% block title %}Django FAQ {% endblock %}</title>	
+{% extends "base.html" %}
 
-<style>
+{% block body_class %}faq{% endblock %}
 
-.answer
-{
-	color: #CC0000;
-}
-
-</style>
-
-</head>
-<body>
-{% if messages %}
-<ul id="messages">
-    {% for message in messages %}
-    <li>{{ message }}</li>
-    {% endfor %}
-</ul>
-<hr/>
-{% endif %}
-
-{% block body %}{% endblock %}
-</body>
-
-</html>
-
+{% block body %}
+  	<h1>{% block content_title %}{% block title %}{% endblock %}{% endblock %}</h1>
+  	{% block content %}{% endblock %}
+{% endblock %}
